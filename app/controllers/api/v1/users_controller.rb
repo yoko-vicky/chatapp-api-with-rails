@@ -9,16 +9,22 @@ module Api
         render json: @users
       end
 
-      # POST /api/v1/users
-      def create
-        @user = User.create!(user_params)
-        render json: :created
-        # NOTE: needs to login
-      end
-
       # GET /users/:id
       def show
         render json: @user
+      end
+
+      # POST /api/v1/users
+      # SIGNUP
+      def create
+        @user = User.create(username: user_params[:username], password: user_params[:password])
+        if @user.valid?
+          token = encode_token({ user_id: @user.id })
+          # token = '123456'
+          render json: { status: :created, user: user_data(@user), token: token }, status: 201
+        else
+          render json: { errorMsgs: @user.errors.full_messages }, status: 422
+        end
       end
 
       # PUT /users/:id
@@ -41,6 +47,13 @@ module Api
 
       def set_user
         @user = User.find(params[:id])
+      end
+
+      def user_data(user)
+        {
+          id: user.id,
+          username: user.username
+        }
       end
     end
   end
