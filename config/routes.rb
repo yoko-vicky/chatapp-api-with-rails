@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       resources :chatrooms do
         resources :messages
       end
-      # resources :login, only: %i[create]
+      resources :login, only: %i[create]
       # resources :auto_login, only: %i[create]
     end
   end
