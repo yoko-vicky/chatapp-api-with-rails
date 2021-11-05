@@ -7,9 +7,9 @@ module Api
 
         if @user&.authenticate(user_params[:password])
           token = encode_token({ user_id: @user.id })
-          render json: { logged_in: true, user: user_data(@user), token: token }
+          render json: { success: true, user: user_data(@user), token: token }
         else
-          render json: { error: 'Please provide correct username and password' }, status: 401
+          render json: { errors: ['Please provide correct username and password'] }
         end
       end
 

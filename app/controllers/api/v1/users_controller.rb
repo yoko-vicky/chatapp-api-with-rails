@@ -20,10 +20,9 @@ module Api
         @user = User.create(username: user_params[:username], password: user_params[:password])
         if @user.valid?
           token = encode_token({ user_id: @user.id })
-          # token = '123456'
-          render json: { status: :created, user: user_data(@user), token: token }, status: 201
+          render json: { success: true, user: user_data(@user), token: token }, status: 201
         else
-          render json: { errorMsgs: @user.errors.full_messages }, status: 422
+          render json: { errors: @user.errors.full_messages }
         end
       end
 
