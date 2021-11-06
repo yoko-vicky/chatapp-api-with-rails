@@ -19,6 +19,7 @@ module Api
       def create
         @user = User.create(username: user_params[:username], password: user_params[:password])
         if @user.valid?
+          session[:user_id] = @user.id
           token = encode_token({ user_id: @user.id })
           render json: { success: true, user: user_data(@user), token: token }, status: 201
         else
@@ -34,6 +35,7 @@ module Api
 
       # DELETE /users/:id
       def destroy
+        session[:user_id] = ''
         @user.destroy
         head :no_content
       end

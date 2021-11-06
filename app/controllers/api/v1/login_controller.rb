@@ -6,6 +6,7 @@ module Api
         @user = User.find_by(username: user_params[:username])
 
         if @user&.authenticate(user_params[:password])
+          session[:user_id] = @user.id
           token = encode_token({ user_id: @user.id })
           render json: { success: true, user: user_data(@user), token: token }
         else
@@ -25,7 +26,6 @@ module Api
           username: user.username
         }
       end
-
     end
   end
 end
