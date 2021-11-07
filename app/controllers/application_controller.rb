@@ -1,15 +1,15 @@
 class ApplicationController < ActionController::API
   before_action :set_current_user
-  SECRET_KEY = Rails.application.credentials.jwt[:secret].to_s
-  EXPIRES_IN = Rails.application.credentials.jwt[:expires_in]
+  # SECRET_KEY = Rails.application.credentials.jwt[:secret].to_s
+  # EXPIRES_IN = Rails.application.credentials.jwt[:expires_in]
 
   def authorized
     render json: { message: 'Please log in' }, status: 401 unless logged_in?
   end
 
   def encode_token(payload)
-    payload[:exp] = EXPIRES_IN.days.from_now.to_i
-    JWT.encode(payload, SECRET_KEY, 'HS256')
+    payload[:exp] = Rails.application.credentials.jwt[:expires_in].days.from_now.to_i
+    JWT.encode(payload, Rails.application.credentials.jwt[:secret].to_s, 'HS256')
   end
 
   def auth_header
