@@ -1,6 +1,6 @@
 module Api
   module V1
-    class LoginController < ApplicationController
+    class AutoLoginController < ApplicationController
       # AUTO_LOGIN
       def create
         @user = logged_in_user
